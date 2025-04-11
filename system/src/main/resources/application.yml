@@ -1,0 +1,80 @@
+server:
+  port: 7777
+
+spring:
+  application:
+    name: ResumeSmart
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/resumesmart?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: admin123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10            # 最大连接池大小
+      minimum-idle: 5                  # 最小空闲连接数
+      max-lifetime: 1800000            # 设置连接池中连接的最大生命周期，单位：毫秒（30分钟）
+      idle-timeout: 600000             # 设置连接池中连接的空闲超时时间，单位：毫秒（10分钟）
+      connection-test-query: SELECT 1  # 配置连接测试查询，确保连接有效
+      connection-timeout: 30000        # 获取连接的超时时间，单位：毫秒（30秒）
+      validation-timeout: 5000         # 验证连接的超时时间，单位：毫秒（5秒）
+      leak-detection-threshold: 15000  # 连接泄漏检测阈值，单位：毫秒（15秒）
+
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 5MB
+
+# redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 0            # 默认DB索引
+
+
+
+# elasticsearch
+  elasticsearch:
+    rest:
+      uris: http://localhost:9200
+
+# RabbitMQ
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        retry:
+          enabled: true
+          max-attempts: 3    # 最大重试次数
+          initial-interval: 5000ms  # 重试间隔
+          multiplier: 2.0    # 间隔乘数（指数退避）
+        default-requeue-rejected: false  # 不自动重新入队
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+    # 日志配置
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+  global-config:
+    db-config:
+      # 逻辑删除配置
+      logic-delete-field: delFlag
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      # ID 类型配置
+      id-type: auto
+
+logging:
+  level:
+    com.rs.mapper: debug
+
+
+file:
+  upload-dir: "/path/to/upload"
+
+
